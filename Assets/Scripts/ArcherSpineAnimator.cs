@@ -19,14 +19,7 @@ public class ArcherSpineAnimator : MonoBehaviour
 
     private string currentState;
     // Start is called before the first frame update
-    private void OnEnable()
-    {
-       
-    }
-    private void OnDisable()
-    {
-        InputHandler.instance.OnMouseLeftPressed -= StartOfShooting;
-    }
+   
     private void Awake()
     {
         _skeletonAnimation = GetComponent<SkeletonAnimation>();

@@ -688,7 +688,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1338,6 +1338,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _archerHand: {fileID: 2036192354}
+  _arrowPrefab: {fileID: 7473856475042876595, guid: 8f3aedbe0c9132640874b265cd25568d, type: 3}
+  _shellSpawnPoint: {fileID: 1010675700}
 --- !u!114 &830499424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,7 +1347,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830499421}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4fbbaf35b772334d9eabae96f10107c, type: 3}
   m_Name: 

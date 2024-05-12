@@ -18,10 +18,7 @@ public class ShellsMaker : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        
-    }
+    
     private void SpawnShell()
     {
        Rigidbody2D bullet =  Instantiate(_arrowPrefab, _spawnPointTransform.transform.position, _archer.NewArcherHandPosition()).GetComponent<Rigidbody2D>();

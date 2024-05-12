@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Searcher;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
@@ -7,14 +8,23 @@ public class Archer : MonoBehaviour
 {
     [SerializeField] GameObject _archerHand;
 
-   // private TrajectoryCalcylation _trajectoryCalcylation;
+    // private TrajectoryCalcylation _trajectoryCalcylation;
+
+    [SerializeField] GameObject _arrowPrefab;
+    [SerializeField] GameObject _shellSpawnPoint;
+   
+
+
+
+
     private Vector3 _mousePositionInWorld;
     private float _angle;
     private float PosX;
     private float PosY;
     private void Start()
     {
-       // _trajectoryCalcylation = new TrajectoryCalcylation(0f,transform.position,Vector3.zero);
+        InputHandler.instance.OnMouseLeftRelease += SpawnShell;
+        // _trajectoryCalcylation = new TrajectoryCalcylation(0f,transform.position,Vector3.zero);
     }
     private void Update()
     {
@@ -50,19 +60,23 @@ public class Archer : MonoBehaviour
          var speed = new Vector3(PosX, PosY, 0) * 2;
        
         var getPoint = TrajectoryCalcylationNew.GetPositiontTrajectory(1f, transform.position, speed);
-        Debug.Log(getPoint);
+       // Debug.Log(getPoint);
         return new Vector2(PosX, PosY);
     }
     
     public Quaternion NewArcherHandPosition()
     {
-        return Quaternion.Euler(0f, 0f, _angle-90);
+        return Quaternion.Euler(0f, 0f, _angle);
     }
     public float GetActualAngle()
     {
         return _angle-90;
     }
 
-
+    private void SpawnShell()
+    {
+        Rigidbody2D bullet = Instantiate(_arrowPrefab,_shellSpawnPoint.transform.position, NewArcherHandPosition()).GetComponent<Rigidbody2D>();
+        bullet.AddForce(GetHandRotation() * 2, ForceMode2D.Impulse);
+    }
 
 }

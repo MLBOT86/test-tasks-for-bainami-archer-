@@ -7,9 +7,11 @@ public class InputHandler : MonoBehaviour
 {
     public static InputHandler instance;
 
+
     public Action OnMouseLeftPressed;
     public Action OnMouseLeftRelease;
 
+    private Vector3 mouseWorldPosition;
     //The shot was fired
     public bool PiuPiu = false;
     private void Awake()
@@ -39,17 +41,23 @@ public class InputHandler : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             OnMouseLeftPressed?.Invoke();
+           // Debug.Log(mouseWorldPosition);
         }
         if (Input.GetMouseButtonUp(0))
         {
             OnMouseLeftRelease?.Invoke();
             PiuPiu = true;
         }
-    }
-    public void Click()
-    {
+
+
+       // Debug.Log( _mainCamera.ScreenToWorldPoint(Input.mousePosition));
+       mouseWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.z = 0f;
 
     }
+
+
+
     
     public Vector3 InputMousePosition()
     {
