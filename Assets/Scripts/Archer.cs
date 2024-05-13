@@ -6,13 +6,18 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Archer : MonoBehaviour
 {
-    [SerializeField] GameObject _archerHand;
+    [SerializeField] UnityEngine.Transform _archerPosition;
 
     // private TrajectoryCalcylation _trajectoryCalcylation;
-
+    [SerializeField] private BowOption _bow;
     [SerializeField] GameObject _arrowPrefab;
     [SerializeField] GameObject _shellSpawnPoint;
-   
+
+    private float _startPowerShot;
+    private float _maxPowerShot;
+    private float _curentPowerShot;
+    private bool _chargingShot= false;
+
 
 
 
@@ -23,16 +28,51 @@ public class Archer : MonoBehaviour
     private float PosY;
     private void Start()
     {
+        InputHandler.instance.OnMouseLeftPressed += ChargingShot;
+        //InputHandler.instance.OnMouseLeftRelease += Shooting;
+
+        _startPowerShot = _bow.StartPower;
+       
+        _maxPowerShot = _bow.MaxPower;
         InputHandler.instance.OnMouseLeftRelease += SpawnShell;
         // _trajectoryCalcylation = new TrajectoryCalcylation(0f,transform.position,Vector3.zero);
     }
     private void Update()
     {
         GetMousePosition();
-        RotateArcherHand(_mousePositionInWorld);
+        RotateArcherPosition(_mousePositionInWorld);
 
        
     }
+    private void FixedUpdate()
+    {
+        if(_chargingShot)
+        {
+           StartOfShooting();
+           Debug.Log("pow" + _curentPowerShot);
+        }
+        
+    }
+
+    private void ChargingShot()
+    {
+        _curentPowerShot = _startPowerShot;
+        _chargingShot = true;
+    }
+    private void StartOfShooting()
+    {
+        
+        if(_curentPowerShot < _maxPowerShot)
+        {
+            _curentPowerShot = _curentPowerShot + 2f;
+        }
+        else
+        {
+            _curentPowerShot = _maxPowerShot;
+            _chargingShot = false;
+        }
+    }
+
 
     private void GetMousePosition()
     {
@@ -40,22 +80,25 @@ public class Archer : MonoBehaviour
 
     }
 
-    private void RotateArcherHand(Vector3 mousePosition)
+    private void RotateArcherPosition(Vector3 mousePosition)
     {
         // Debug.Log(mousePosition);
-        Vector3 _direction = (mousePosition - _archerHand.transform.position);
+        Vector3 _direction = (mousePosition - _archerPosition.position);
+        _direction.z = 0f;
+        _direction.Normalize();
+        Debug.Log(_direction);
         PosX = _direction.x;
         PosY = _direction.y;
         _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
         // Debug.Log(_angle);
-        _archerHand.transform.rotation = Quaternion.Euler(0f, 0f, _angle + 90);
+        _archerPosition.rotation = Quaternion.Euler(0f, 0f, _angle);
 
        
         // Debug.Log(direction);
        
 
     }
-    public Vector2 GetHandRotation()
+    public Vector2 GetRotationPosition()
     {
          var speed = new Vector3(PosX, PosY, 0) * 2;
        
@@ -64,10 +107,7 @@ public class Archer : MonoBehaviour
         return new Vector2(PosX, PosY);
     }
     
-    public Quaternion NewArcherHandPosition()
-    {
-        return Quaternion.Euler(0f, 0f, _angle);
-    }
+    
     public float GetActualAngle()
     {
         return _angle-90;
@@ -75,8 +115,8 @@ public class Archer : MonoBehaviour
 
     private void SpawnShell()
     {
-        Rigidbody2D bullet = Instantiate(_arrowPrefab,_shellSpawnPoint.transform.position, NewArcherHandPosition()).GetComponent<Rigidbody2D>();
-        bullet.AddForce(GetHandRotation() * 2, ForceMode2D.Impulse);
+        Rigidbody2D bullet = Instantiate(_arrowPrefab,_shellSpawnPoint.transform.position, Quaternion.Euler(0f, 0f, _angle)).GetComponent<Rigidbody2D>();
+        bullet.AddForce(GetRotationPosition() * _curentPowerShot, ForceMode2D.Impulse);
     }
 
 }

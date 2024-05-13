@@ -11,9 +11,9 @@ public class InputHandler : MonoBehaviour
     public Action OnMouseLeftPressed;
     public Action OnMouseLeftRelease;
 
-    private Vector3 mouseWorldPosition;
+    private Vector3 _mouseWorldPosition;
     //The shot was fired
-    public bool PiuPiu = false;
+   // public bool PiuPiu = false;
     private void Awake()
     {
         if (instance == null)
@@ -28,15 +28,15 @@ public class InputHandler : MonoBehaviour
 
     private Vector3 _mousePositionInWorld;
     [SerializeField] private Camera _mainCamera;
-    [SerializeField] private Transform _playerTransform;
+   // [SerializeField] private Transform _playerTransform;
 
     // Update is called once per frame
     private void Update()
     {
-        float enter;
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        new Plane(-Vector3.forward,_playerTransform.position).Raycast(ray, out enter);
-        _mousePositionInWorld = ray.GetPoint(enter);
+       // float enter;
+       // Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        //new Plane(-Vector3.forward,_playerTransform.position).Raycast(ray, out enter);
+      // _mousePositionInWorld = ray.GetPoint(enter);
 
         if(Input.GetMouseButtonDown(0))
         {
@@ -46,13 +46,14 @@ public class InputHandler : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             OnMouseLeftRelease?.Invoke();
-            PiuPiu = true;
+           // PiuPiu = true;
         }
 
 
        // Debug.Log( _mainCamera.ScreenToWorldPoint(Input.mousePosition));
-       mouseWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPosition.z = 0f;
+       _mouseWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(_mouseWorldPosition);
+       // mouseWorldPosition.z = 0f;
 
     }
 
@@ -61,7 +62,7 @@ public class InputHandler : MonoBehaviour
     
     public Vector3 InputMousePosition()
     {
-       return _mousePositionInWorld;
+       return _mouseWorldPosition;
 
     }
 }
