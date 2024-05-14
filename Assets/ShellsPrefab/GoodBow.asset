@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: GoodBow
   Sprite: {fileID: 21300000, guid: ca91147d913ae0e409a1491d4e78ebdc, type: 3}
   StartPower: 2
-  MaxPower: 20
+  MaxPower: 15

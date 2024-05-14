@@ -12,6 +12,7 @@ public class Archer : MonoBehaviour
     [SerializeField] private BowOption _bow;
     [SerializeField] GameObject _arrowPrefab;
     [SerializeField] GameObject _shellSpawnPoint;
+    [SerializeField] LineRenderer _lineRenderer;
 
     private float _startPowerShot;
     private float _maxPowerShot;
@@ -41,8 +42,8 @@ public class Archer : MonoBehaviour
     {
         GetMousePosition();
         RotateArcherPosition(_mousePositionInWorld);
+        ShowTrajectory(_archerPosition.position, GetRotationPosition());
 
-       
     }
     private void FixedUpdate()
     {
@@ -51,20 +52,22 @@ public class Archer : MonoBehaviour
            StartOfShooting();
            Debug.Log("pow" + _curentPowerShot);
         }
-        
+       
     }
 
     private void ChargingShot()
     {
         _curentPowerShot = _startPowerShot;
         _chargingShot = true;
+        _lineRenderer.enabled = true;
+      
     }
     private void StartOfShooting()
     {
         
         if(_curentPowerShot < _maxPowerShot)
         {
-            _curentPowerShot = _curentPowerShot + 2f;
+            _curentPowerShot = _curentPowerShot + 0.2f;
         }
         else
         {
@@ -98,13 +101,13 @@ public class Archer : MonoBehaviour
        
 
     }
-    public Vector2 GetRotationPosition()
+    public Vector3 GetRotationPosition()
     {
-         var speed = new Vector3(PosX, PosY, 0) * 2;
+         var speed = new Vector3(PosX, PosY, 0) *_curentPowerShot;
        
-        var getPoint = TrajectoryCalcylationNew.GetPositiontTrajectory(1f, transform.position, speed);
+      //  var getPoint = TrajectoryCalcylationNew.GetPositiontTrajectory(1f, transform.position, speed);
        // Debug.Log(getPoint);
-        return new Vector2(PosX, PosY);
+        return  speed;
     }
     
     
@@ -117,6 +120,25 @@ public class Archer : MonoBehaviour
     {
         Rigidbody2D bullet = Instantiate(_arrowPrefab,_shellSpawnPoint.transform.position, Quaternion.Euler(0f, 0f, _angle)).GetComponent<Rigidbody2D>();
         bullet.AddForce(GetRotationPosition() * _curentPowerShot, ForceMode2D.Impulse);
+       _lineRenderer.enabled= false;
     }
+
+
+
+    public void ShowTrajectory(Vector3 startPosition, Vector3 speed)
+    {
+        Vector3[] points= new Vector3[5];
+        _lineRenderer.positionCount=points.Length;
+       
+        for (int i = 0; i < points.Length; i++)
+        {
+            float time =0.05f+ i * 0.2f;
+            points[i] = TrajectoryCalcylationNew.GetPositiontTrajectory(time, startPosition, speed);
+        }
+        _lineRenderer.SetPositions(points);
+    }
+
+
+
 
 }
