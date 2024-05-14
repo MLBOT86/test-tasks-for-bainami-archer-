@@ -9,5 +9,6 @@ public class BowOption : ScriptableObject
     public Sprite Sprite;
     public float StartPower;
     public float MaxPower;
+    public GameObject BulletPrefab;
 
 }

@@ -16,3 +16,4 @@ MonoBehaviour:
   Sprite: {fileID: 0}
   StartPower: 1
   MaxPower: 5
+  BulletPrefab: {fileID: 5901527939987169361, guid: 773b68771e4fc2d47802009f3db5243d, type: 3}

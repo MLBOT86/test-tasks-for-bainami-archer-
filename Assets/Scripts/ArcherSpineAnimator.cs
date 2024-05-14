@@ -32,7 +32,7 @@ public class ArcherSpineAnimator : MonoBehaviour
         SetCharacterState(currentState);
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         RotateArcherBody();

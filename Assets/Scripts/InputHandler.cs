@@ -12,8 +12,7 @@ public class InputHandler : MonoBehaviour
     public Action OnMouseLeftRelease;
 
     private Vector3 _mouseWorldPosition;
-    //The shot was fired
-   // public bool PiuPiu = false;
+    
     private void Awake()
     {
         if (instance == null)
@@ -28,20 +27,17 @@ public class InputHandler : MonoBehaviour
 
     private Vector3 _mousePositionInWorld;
     [SerializeField] private Camera _mainCamera;
-   // [SerializeField] private Transform _playerTransform;
+   
 
     // Update is called once per frame
     private void Update()
     {
-       // float enter;
-       // Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        //new Plane(-Vector3.forward,_playerTransform.position).Raycast(ray, out enter);
-      // _mousePositionInWorld = ray.GetPoint(enter);
+      
 
         if(Input.GetMouseButtonDown(0))
         {
             OnMouseLeftPressed?.Invoke();
-           // Debug.Log(mouseWorldPosition);
+           
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -50,10 +46,9 @@ public class InputHandler : MonoBehaviour
         }
 
 
-       // Debug.Log( _mainCamera.ScreenToWorldPoint(Input.mousePosition));
+       
        _mouseWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(_mouseWorldPosition);
-       // mouseWorldPosition.z = 0f;
+        
 
     }
 

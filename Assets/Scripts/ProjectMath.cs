@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TrajectoryCalcylationNew 
+public static class ProjectMath
 {
 
 
@@ -14,5 +14,11 @@ public static class TrajectoryCalcylationNew
 
         return pointPosition;
     }
+    public static float GetAngleRotation(float posY,float posX)
+    {
 
+         float angle = Mathf.Atan2(posY, posX) * Mathf.Rad2Deg;
+
+        return angle;
+    }
 }
